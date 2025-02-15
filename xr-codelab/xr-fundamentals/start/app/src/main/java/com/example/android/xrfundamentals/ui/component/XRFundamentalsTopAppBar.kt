@@ -16,16 +16,27 @@
 
 package com.example.android.xrfundamentals.ui.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.xr.compose.platform.LocalHasXrSpatialFeature
 import com.example.android.xrfundamentals.R
 
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable fun XRFundamentalsTopAppBar() {
+@Composable
+fun XRFundamentalsTopAppBar() {
     TopAppBar(
-        title = { Text(stringResource(R.string.app_name)) }
+        title = { Text(stringResource(R.string.app_name)) },
+        actions = {
+            if (LocalHasXrSpatialFeature.current) {
+                ToggleSpaceModeButton()
+            }
+        }
+
     )
 }
