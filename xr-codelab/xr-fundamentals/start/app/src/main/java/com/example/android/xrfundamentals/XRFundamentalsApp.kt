@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,20 +33,25 @@ import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import androidx.xr.compose.spatial.Subspace
 import androidx.xr.compose.subspace.SpatialPanel
+import androidx.xr.compose.subspace.SpatialRow
 import androidx.xr.compose.subspace.layout.SubspaceModifier
 import androidx.xr.compose.subspace.layout.height
+import androidx.xr.compose.subspace.layout.movable
+import androidx.xr.compose.subspace.layout.resizable
 import androidx.xr.compose.subspace.layout.width
 import com.example.android.xrfundamentals.ui.component.PrimaryCard
 import com.example.android.xrfundamentals.ui.component.SecondaryCardList
 import com.example.android.xrfundamentals.ui.component.XRFundamentalsTopAppBar
 import com.example.android.xrfundamentals.ui.layout.CompactLayout
 import com.example.android.xrfundamentals.ui.layout.ExpandedLayout
+import com.example.android.xrfundamentals.ui.theme.XRFundamentalsTheme
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
 fun XRFundamentalsApp(
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
 ) {
+
     Scaffold(
         topBar = { XRFundamentalsTopAppBar() }
     ) { innerPadding ->
@@ -80,17 +86,39 @@ fun XRFundamentalsApp(
             )
         }
     }
+
+    // FullSpaceモード時の表示
     Subspace {
-        SpatialPanel(
-            modifier = SubspaceModifier
-                .width(1024.dp)
-                .height(800.dp)
+        SpatialRow(
+            curveRadius = 825.dp
         ) {
-            Scaffold(
-                topBar = { XRFundamentalsTopAppBar() }
-            ) { innerPadding ->
-                Box(Modifier.padding(innerPadding)) {
-                    PrimaryCard(
+            SpatialPanel(
+                modifier = SubspaceModifier
+                    .width(1024.dp)
+                    .height(800.dp)
+            ) {
+                Scaffold(
+                    topBar = { XRFundamentalsTopAppBar() }
+                ) { innerPadding ->
+                    Box(Modifier.padding(innerPadding)) {
+                        PrimaryCard(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .verticalScroll(rememberScrollState())
+                        )
+                    }
+                }
+            }
+
+            SpatialPanel(
+                modifier = SubspaceModifier
+                    .width(340.dp)
+                    .height(800.dp)
+                    .resizable()
+                    .movable()
+            ) {
+                Surface {
+                    SecondaryCardList(
                         modifier = Modifier
                             .padding(16.dp)
                             .verticalScroll(rememberScrollState())
@@ -98,5 +126,7 @@ fun XRFundamentalsApp(
                 }
             }
         }
+
     }
+
 }
