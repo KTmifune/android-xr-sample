@@ -1,4 +1,4 @@
 # Android XR Codelabs
-下記Codelabs触ってみる
+下記Codelabsを実施
 
 https://github.com/android/xr-codelabs
